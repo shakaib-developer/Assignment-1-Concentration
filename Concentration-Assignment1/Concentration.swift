@@ -49,7 +49,16 @@ class Concentration {
             cards += [card,card]
         }
         
-        // TODO: Shuffle cards
+        // shuffling cards logic
+        var swapFrom = 0
+        var swapTo = 0
+        for _ in 0..<cards.count {
+            repeat {
+                swapFrom = cards.count.arc4random()
+                swapTo = cards.count.arc4random()
+            } while(swapFrom == swapTo)
+            cards.swapAt(swapFrom, swapTo)
+        }
     }
     
     
