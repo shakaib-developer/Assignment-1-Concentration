@@ -17,11 +17,11 @@ class GameViewController: UIViewController {
     // start a new game
     var game: Concentration?// = Concentration(noOfPairs: cardButtons.count / 2)
     
-    var flipCount: Int? {
-        didSet {
-            flipCountsLabel.text = "Flips: \(flipCount!)"
-        }
-    }//= 0
+//    var flipCount: Int? {
+//        didSet {
+//            flipCountsLabel.text = "Flips: \(flipCount!)"
+//        }
+//    }//= 0
     var score: Int? {
         didSet {
             scoreLabel.text = "Score: \(score!)"
@@ -41,7 +41,7 @@ class GameViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     @IBAction func touchCard(_ sender: UIButton) {
-        flipCount! += 1
+//        flipCount! += 1
         
         if let index = cardButtons.index(of: sender) {
             let selectedCard = game!.cards[index]
@@ -59,6 +59,8 @@ class GameViewController: UIViewController {
                 }
             }
         }
+        
+        flipCountsLabel.text = "Flips : \(game!.flipCount)"
                 
         if isGameOver() {
             reset()
@@ -69,7 +71,7 @@ class GameViewController: UIViewController {
         game = Concentration(noOfPairs: cardButtons.count / 2)
         cardButtons.forEach({$0.isEnabled = true; $0.alpha = 1.0; $0.backgroundColor = btnBGColor; $0.setTitle("", for: UIControlState.normal)})
         emojis = theme//["🦇", "😱", "🙀", "😈", "🎃", "👻", "🍭", "🍬", "🍎"]
-        flipCount = 0
+        //flipCount = 0
         score = 0
         matchedPairs = 0
         flipCountsLabel.text = "Flips : 0"
@@ -95,9 +97,6 @@ class GameViewController: UIViewController {
                 button.setTitle(emojiForButton(for: card), for: UIControlState.normal)
                 button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
                 button.isEnabled = false
-//                if card.isSeen {
-//                    score! -= 1
-//                }
             }
             else {
                 if card.isMatched {
