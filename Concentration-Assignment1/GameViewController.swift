@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         reset()
@@ -24,7 +24,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var flipCountsLabel: UILabel!
     
     @IBAction func newGameButton(_ sender: UIButton) {
-        reset()
+        //reset()
+        dismiss(animated: true, completion: nil)
     }
     @IBAction func touchCard(_ sender: UIButton) {
         flipCount! += 1
@@ -44,7 +45,7 @@ class ViewController: UIViewController {
     func reset() {
         game = Concentration(noOfPairs: cardButtons.count / 2)
         cardButtons.forEach({$0.isEnabled = true; $0.alpha = 1.0; $0.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1); $0.setTitle("", for: UIControlState.normal)})
-        emojis = ["🦇", "😱", "🙀", "😈", "🎃", "👻", "🍭", "🍬", "🍎"]
+        emojis = theme//["🦇", "😱", "🙀", "😈", "🎃", "👻", "🍭", "🍬", "🍎"]
         flipCount = 0
         flipCountsLabel.text = "Flips : 0"
     }
@@ -99,7 +100,12 @@ class ViewController: UIViewController {
         return emoji[card.cardNumber] ?? "?"
     }
     
-    var emojis = ["🦇", "😱", "🙀", "😈", "🎃", "👻", "🍭", "🍬", "🍎"]
+    var theme = [String]() {
+        didSet {
+            emojis = theme
+        }
+    }// = ["🦇", "😱", "🙀", "😈", "🎃", "👻", "🍭", "🍬", "🍎"]
+    lazy var emojis = theme
 }
 
 extension Int {
