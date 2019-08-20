@@ -17,11 +17,24 @@ class GameViewController: UIViewController {
     // start a new game
     var game: Concentration?// = Concentration(noOfPairs: cardButtons.count / 2)
     
-    var flipCount: Int? //= 0
+    var flipCount: Int? {
+        didSet {
+            flipCountsLabel.text = "Flips: \(flipCount!)"
+        }
+    }//= 0
+    var score: Int? {
+        didSet {
+            scoreLabel.text = "Score: \(score!)"
+        }
+    }//= 0
+    
+    var matchedPairs = 0
     
     @IBOutlet var cardButtons: [UIButton]!
     
     @IBOutlet weak var flipCountsLabel: UILabel!
+    
+    @IBOutlet weak var scoreLabel: UILabel!
     
     @IBAction func newGameButton(_ sender: UIButton) {
         //reset()
@@ -31,11 +44,23 @@ class GameViewController: UIViewController {
         flipCount! += 1
         
         if let index = cardButtons.index(of: sender) {
+            let selectedCard = game!.cards[index]
+            
             game!.flipCardInModel(at: index)
             updateViewFromModel()
+            let calcMatchedPairs = game!.cards.filter { $0.isMatched }.count
+            if matchedPairs < calcMatchedPairs {
+                score! += 2
+                matchedPairs = calcMatchedPairs
+            }
+            else if selectedCard.isSeen {
+                if game!.oneFaceUpOnlyIndex == nil {
+                    score! -= 1
+                }
+            }
         }
         
-        flipCountsLabel.text = "Flips: \(flipCount!)"
+       // flipCountsLabel.text = "Flips: \(flipCount!)"
         
         if isGameOver() {
             reset()
@@ -44,10 +69,13 @@ class GameViewController: UIViewController {
     
     func reset() {
         game = Concentration(noOfPairs: cardButtons.count / 2)
-        cardButtons.forEach({$0.isEnabled = true; $0.alpha = 1.0; $0.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1); $0.setTitle("", for: UIControlState.normal)})
+        cardButtons.forEach({$0.isEnabled = true; $0.alpha = 1.0; $0.backgroundColor = btnBGColor; $0.setTitle("", for: UIControlState.normal)})
         emojis = theme//["🦇", "😱", "🙀", "😈", "🎃", "👻", "🍭", "🍬", "🍎"]
         flipCount = 0
+        score = 0
+        matchedPairs = 0
         flipCountsLabel.text = "Flips : 0"
+        scoreLabel.text = "Score : 0"
     }
     
     func isGameOver() -> Bool {
@@ -69,21 +97,24 @@ class GameViewController: UIViewController {
                 button.setTitle(emojiForButton(for: card), for: UIControlState.normal)
                 button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
                 button.isEnabled = false
+//                if card.isSeen {
+//                    score! -= 1
+//                }
             }
             else {
                 if card.isMatched {
                     button.setTitle("✅", for: UIControlState.normal)
                     button.alpha = 0.5
                     button.isEnabled = false
-                    button.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+                    button.backgroundColor = btnBGColor
                 }
                 else {
                     button.setTitle("", for: UIControlState.normal)
                     button.isEnabled = true
-                    button.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
+                    button.backgroundColor = btnBGColor
                 }
             }
-        }
+        } 
     }
     
     var emoji = [Int: String]()
@@ -106,6 +137,7 @@ class GameViewController: UIViewController {
         }
     }// = ["🦇", "😱", "🙀", "😈", "🎃", "👻", "🍭", "🍬", "🍎"]
     lazy var emojis = theme
+    var btnBGColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
 }
 
 extension Int {

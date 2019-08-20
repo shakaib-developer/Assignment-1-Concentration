@@ -12,6 +12,7 @@ struct Card {
     var isFaceUp: Bool = false
     var isMatched: Bool = false
     var cardNumber: Int
+    var isSeen: Bool = false
     
     static var uniqueCardNumber = 0
     
