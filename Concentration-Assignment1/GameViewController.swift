@@ -59,9 +59,7 @@ class GameViewController: UIViewController {
                 }
             }
         }
-        
-       // flipCountsLabel.text = "Flips: \(flipCount!)"
-        
+                
         if isGameOver() {
             reset()
         }
