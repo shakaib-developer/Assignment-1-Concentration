@@ -16,11 +16,9 @@ class Concentration {
     var oneFaceUpOnlyIndex: Int?
     
     func flipCardInModel(at index: Int) {
-        
         flipCount += 1
         
         // things to check before flipping the card
-        
         //if there is already one faceup card so check if the new tapped card is a different card then proceed
         if let matchIndex = oneFaceUpOnlyIndex, matchIndex != index {
             
@@ -30,6 +28,7 @@ class Concentration {
                 cards[index].isMatched = true
             }
             
+            // check the flag, all cards are face down now
             oneFaceUpOnlyIndex = nil
         }
         else { // if there is no faceUp card
@@ -42,7 +41,8 @@ class Concentration {
             oneFaceUpOnlyIndex = index
         }
         
-        // flip the card
+        // flip the card, and
+        //mark that it is atleast flipped once(for score purpose)
         cards[index].isFaceUp = !cards[index].isFaceUp
         cards[index].isSeen = true
     }
@@ -62,9 +62,13 @@ class Concentration {
         var swapTo = 0
         for _ in 0..<cards.count {
             repeat {
+                
+                // pick 2 random indices from array and swap them
                 swapFrom = cards.count.arc4random()
                 swapTo = cards.count.arc4random()
+                
             } while(swapFrom == swapTo)
+            
             cards.swapAt(swapFrom, swapTo)
         }
     }

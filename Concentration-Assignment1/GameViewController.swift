@@ -69,13 +69,15 @@ class GameViewController: UIViewController {
     
     func reset() {
         game = Concentration(noOfPairs: cardButtons.count / 2)
-        cardButtons.forEach({$0.isEnabled = true; $0.alpha = 1.0; $0.backgroundColor = btnBGColor; $0.setTitle("", for: UIControlState.normal)})
-        emojis = theme//["🦇", "😱", "🙀", "😈", "🎃", "👻", "🍭", "🍬", "🍎"]
+        cardButtons.forEach({$0.isEnabled = true; $0.alpha = 1.0; $0.backgroundColor = cardBGColor; $0.setTitle("", for: UIControlState.normal)})
+        emojis = theme
         //flipCount = 0
         score = 0
         matchedPairs = 0
         flipCountsLabel.text = "Flips : 0"
         scoreLabel.text = "Score : 0"
+        view.backgroundColor = viewBGColor
+        cardButtons.forEach { $0.backgroundColor = cardBGColor }
     }
     
     func isGameOver() -> Bool {
@@ -103,12 +105,12 @@ class GameViewController: UIViewController {
                     button.setTitle("✅", for: UIControlState.normal)
                     button.alpha = 0.5
                     button.isEnabled = false
-                    button.backgroundColor = btnBGColor
+                    button.backgroundColor = cardBGColor
                 }
                 else {
                     button.setTitle("", for: UIControlState.normal)
                     button.isEnabled = true
-                    button.backgroundColor = btnBGColor
+                    button.backgroundColor = cardBGColor
                 }
             }
         } 
@@ -129,12 +131,15 @@ class GameViewController: UIViewController {
     }
     
     var theme = [String]() {
+        
+        // whenever the value of theme is set, it is assigned to emojis array
         didSet {
             emojis = theme
         }
-    }// = ["🦇", "😱", "🙀", "😈", "🎃", "👻", "🍭", "🍬", "🍎"]
+    }
     lazy var emojis = theme
-    var btnBGColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
+    var cardBGColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
+    var viewBGColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
 }
 
 extension Int {
